@@ -1,6 +1,7 @@
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class Main1SelectSpringJDBCTemplate {
         config.setUsername(username);
         config.setPassword(password);
         HikariDataSource dataSource = new HikariDataSource(config);
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         // SQL string to execute
         String sql = "SELECT id, name FROM person";
