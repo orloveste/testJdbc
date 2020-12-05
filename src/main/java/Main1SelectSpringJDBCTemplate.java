@@ -1,4 +1,7 @@
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,13 @@ public class Main1SelectSpringJDBCTemplate {
         String url = "jdbc:mysql://" + machine + ":" + port + "/" + databaseName;
         String username = "root";
         String password = "root";
+
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(username);
+        config.setPassword(password);
+        HikariDataSource dataSource = new HikariDataSource(config);
+
         // SQL string to execute
         String sql = "SELECT id, name FROM person";
         // expected data
