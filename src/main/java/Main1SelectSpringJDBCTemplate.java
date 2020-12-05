@@ -1,6 +1,7 @@
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.*;
@@ -42,46 +43,10 @@ public class Main1SelectSpringJDBCTemplate {
 
         // SQL string to execute
         String sql = "SELECT id, name FROM person";
-        // expected data
-        List<Person> people = new ArrayList<>();
-        // connection to use
-        Connection connection = null;
-        try {
-            // create database connection
-            connection = DriverManager.getConnection(url, username, password);
-            // create SQL statement
-            Statement statement = connection.createStatement();
-            // execute SQL statement and obtain the result
-            ResultSet resultSet = statement.executeQuery(sql);
-            // loop through the result set
-            while (resultSet.next()) {
-                // get data and process it row by row
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                // build object
-                Person person = new Person(id, name);
-                // and add it to result
-                people.add(person);
-            }
-            // optional
-            resultSet.close();
-            // optional
-            statement.close();
-        } catch (SQLException e) {
-            // process or not
-            throw new RuntimeException(e);
-        } finally {
-            // always close the connection
-            try {
-                // safety check always
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        // verify result by checking database table data and console output
+// expected data
+        List<Person> people = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Person.class));
+// verify result by checking database table data and console output
         System.out.println(people);
+//select, update, droptable, delete
     }
 }
